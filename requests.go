@@ -3,19 +3,32 @@ package cloedy
 import (
 	"net/http"
 	"strings"
-	"bytes"
-	"fmt"
-	"io/ioutil"
+	"io"
 )
 
 type RequestParams struct {
 	Method, Url, Data string
 	Headers           map[string]string
-	Files             []bytes.Reader
+	Files             io.Reader
 }
 
-func Requests(params RequestParams) (*http.Response, error) {
-	method := params.Method
+func method(m string) string {
+	switch strings.ToLower(m) {
+	case "get":
+		return http.MethodGet
+	case "post":
+		return http.MethodPost
+	case "options":
+		return http.MethodOptions
+	case "delete":
+		return http.MethodDelete
+	default:
+		return http.MethodGet
+	}
+}
+
+func (params *RequestParams) Requests() (*http.Response, error) {
+	method := method(params.Method)
 	url := params.Url
 	data := params.Data
 	datas := strings.NewReader(data)
@@ -30,9 +43,4 @@ func Requests(params RequestParams) (*http.Response, error) {
 	}
 	client := http.DefaultClient
 	return client.Do(req)
-}
-
-func Text(response *http.Response) string {
-	t, _ := ioutil.ReadAll(response.Body)
-	return fmt.Sprintf("%s", t)
 }
