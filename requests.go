@@ -55,3 +55,16 @@ func (params *RequestParams) Requests() (*http.Response, error) {
 	client := http.DefaultClient
 	return client.Do(req)
 }
+
+
+func Wb(fp string, con2 []byte){
+	fd, _ := os.OpenFile(fp, os.O_WRONLY|os.O_CREATE, os.ModePerm)
+	fd.Write(con2)
+	defer fd.Close()
+}
+
+func Ws(fp string, con2 string){
+	fd, _ := os.OpenFile(fp, os.O_WRONLY|os.O_CREATE, os.ModePerm)
+	fd.WriteString(con2)
+	defer fd.Close()
+}
