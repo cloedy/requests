@@ -2,7 +2,7 @@ package cloedy
 
 import (
     "runtime"
-    "error"
+    "errors"
 )
 
 func CurrentFile() string {
