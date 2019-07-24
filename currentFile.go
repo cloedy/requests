@@ -3,6 +3,7 @@ package cloedy
 import (
     "runtime"
     "errors"
+    "path"
 )
 
 func CurrentFile() string {
